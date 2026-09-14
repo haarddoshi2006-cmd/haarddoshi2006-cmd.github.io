@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haard Doshi — Software & Data Engineer</title>
+<meta name="description" content="Haard Doshi — CS & Mathematics at Drexel University. Building data pipelines, distributed systems, and AI tooling.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF0EC;
+    --panel: #E4E7E0;
+    --ink: #171B24;
+    --ink-soft: #4A5568;
+    --line: #CBD0C7;
+    --accent: #2F5DA8;
+    --accent-soft: #DCE4F0;
+    --max: 760px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--accent-soft); color: var(--ink); }
+
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: currentColor; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .mono {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .prose { max-width: var(--max); }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(238, 240, 236, 0.88);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+  }
+  nav .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  nav .links { display: flex; gap: 28px; }
+  nav .links a {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    border-bottom: none;
+  }
+  nav .links a:hover { color: var(--ink); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 88px 0 64px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    line-height: 1.12;
+  }
+  .hero .role {
+    margin-top: 14px;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+  }
+  .hero .tagline {
+    margin-top: 22px;
+    max-width: 46ch;
+    color: var(--ink-soft);
+  }
+  .hero .cta-row {
+    margin-top: 32px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    padding: 10px 18px;
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  .btn:hover { background: var(--ink); color: var(--bg); border-bottom: 1px solid var(--ink); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: #244a87; border-color: #244a87; color: #fff; }
+
+  /* pipeline diagram */
+  .diagram-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 28px 20px;
+  }
+  .diagram-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  svg#pipeline { width: 100%; height: auto; display: block; }
+  .stage-box {
+    fill: var(--bg);
+    stroke: var(--ink);
+    stroke-width: 1.2;
+  }
+  .stage-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    fill: var(--ink);
+  }
+  .flow-line {
+    stroke: var(--ink-soft);
+    stroke-width: 1.2;
+    fill: none;
+  }
+  .pulse {
+    fill: var(--accent);
+  }
+
+  /* ---------- Section shell ---------- */
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  section.hero { border-top: none; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 32px;
+  }
+  .section-head h2 { font-size: 1.5rem; }
+  .section-head .mono { white-space: nowrap; }
+
+  /* ---------- Experience timeline ---------- */
+  .timeline { border-left: 1px solid var(--line); padding-left: 28px; }
+  .t-item { position: relative; padding-bottom: 40px; }
+  .t-item:last-child { padding-bottom: 0; }
+  .t-item::before {
+    content: "";
+    position: absolute;
+    left: -32.5px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+    background: var(--bg);
+    border: 1.5px solid var(--accent);
+  }
+  .t-item .t-date { display: block; margin-bottom: 6px; }
+  .t-item h3 { font-size: 1.08rem; }
+  .t-item .t-org { color: var(--ink-soft); font-size: 0.95rem; margin-top: 2px; }
+  .t-item ul { margin: 14px 0 0; padding-left: 18px; color: var(--ink-soft); }
+  .t-item li { margin-bottom: 7px; font-size: 0.96rem; }
+  .t-item li::marker { color: var(--accent); }
+
+  /* ---------- Projects ---------- */
+  .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .project {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px;
+    background: transparent;
+  }
+  .project h3 { font-size: 1.1rem; margin-bottom: 6px; }
+  .project .p-meta { margin-bottom: 12px; }
+  .project p { color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink-soft);
+  }
+  .project a.link { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; }
+
+  /* ---------- Education ---------- */
+  .edu-row { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .edu-row .school h3 { font-size: 1.1rem; }
+  .edu-row .school p { color: var(--ink-soft); margin: 4px 0 0; }
+  .honors { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .honors .tag { border-color: var(--line); }
+
+  /* ---------- Footer / contact ---------- */
+  footer { padding: 56px 0 72px; border-top: 1px solid var(--line); }
+  footer h2 { font-size: 1.6rem; margin-bottom: 14px; }
+  footer p { color: var(--ink-soft); max-width: 50ch; }
+  .contact-row {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .foot-note {
+    margin-top: 48px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 780px) {
+    .hero { grid-template-columns: 1fr; padding-top: 56px; }
+    .projects { grid-template-columns: 1fr; }
+    nav .links { gap: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulse { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Haard Doshi</div>
+    <div class="links">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap" style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:48px; align-items:center; width:100%;">
+    <div>
+      <h1>Haard Doshi</h1>
+      <p class="role">Software &amp; Data Engineer — CS &amp; Mathematics, Drexel University</p>
+      <p class="tagline">I build the systems that move and validate data before anyone gets to ask it a question — pipelines, indexing engines, and the occasional autonomous agent that writes its own code.</p>
+      <p class="mono" id="local-clock" style="margin-top:16px;"></p>
+      <div class="cta-row">
+        <a class="btn primary" href="mailto:haard.h.doshi@gmail.com">Get in touch</a>
+        <a class="btn" href="https://linkedin.com/in/haard-doshi">LinkedIn</a>
+      </div>
+    </div>
+    <div class="diagram-panel">
+      <div class="diagram-label">// a pipeline, roughly like the ones I build</div>
+      <svg id="pipeline" viewBox="0 0 340 140" xmlns="http://www.w3.org/2000/svg">
+        <path class="flow-line" d="M 55 70 L 130 70"></path>
+        <path class="flow-line" d="M 165 70 L 240 70"></path>
+        <path class="flow-line" d="M 275 70 L 300 70"></path>
+
+        <rect class="stage-box" x="5" y="50" width="50" height="40" rx="3"></rect>
+        <text class="stage-text" x="30" y="74" text-anchor="middle">ingest</text>
+
+        <rect class="stage-box" x="130" y="45" width="70" height="50" rx="3"></rect>
+        <text class="stage-text" x="165" y="74" text-anchor="middle">validate</text>
+
+        <rect class="stage-box" x="240" y="50" width="60" height="40" rx="3"></rect>
+        <text class="stage-text" x="270" y="74" text-anchor="middle">serve</text>
+
+        <circle class="pulse" r="4" cx="70" cy="70">
+          <animateMotion
+            path="M 0 0 L 75 0 L 95 0 L 170 0 L 195 0 L 220 0"
+            dur="4.5s"
+            repeatCount="indefinite" />
+        </circle>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap prose">
+    <div class="section-head">
+      <h2>Experience</h2>
+      <span class="mono">2025 — present</span>
+    </div>
+    <div class="timeline">
+
+      <div class="t-item">
+        <span class="mono t-date">Mar 2026 — Present</span>
+        <h3>Software Engineering Intern</h3>
+        <div class="t-org">Merck &amp; Co. — Digital Strategy &amp; Insights Co-op, Rahway NJ</div>
+        <ul>
+          <li>Architected an end-to-end AI tool proof of concept with LangChain and Databricks that synthesizes company-wide datasets into real-time operational answers and dynamic visualizations.</li>
+          <li>Built automated backend validation pipelines and ingestion services in Python and SQL, cutting transformation latency and pipeline overhead by over 35%.</li>
+          <li>Designed an access governance platform enforcing row-level security for 500+ enterprise users.</li>
+        </ul>
+      </div>
+
+      <div class="t-item">
+        <span class="mono t-date">Sep 2025 — Dec 2025</span>
+        <h3>Software Engineering Extern</h3>
+        <div class="t-org">Extern — Strategy &amp; Operations Analytics, in partnership with Amazon</div>
+        <ul>
+          <li>Built data aggregation scripts and analytics pipelines in Python and Pandas processing logistics metrics across regional fulfillment networks.</li>
+          <li>Ran root-cause bottleneck analysis on high-volume pipelines and delivered optimization strategies to senior engineering leads.</li>
+        </ul>
+      </div>
+
+      <div class="t-item">
+        <span class="mono t-date">Jun 2025 — Mar 2026</span>
+        <h3>Software Engineering Research Assistant</h3>
+        <div class="t-org">Metadata Research Center, Drexel University — STAR Scholar</div>
+        <ul>
+          <li>Built a high-throughput search and indexing engine across 53,000+ records with vector indexing for low-latency retrieval.</li>
+          <li>Refactored relational schemas and query paths, cutting execution latency across multi-table joins.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <span class="mono">selected work</span>
+    </div>
+    <div class="projects">
+
+      <div class="project">
+        <h3>Simians</h3>
+        <div class="p-meta mono">Autonomous AI agent workflow — HackPrinceton Finalist</div>
+        <p>A real-time multi-agent orchestration bridge where autonomous LLM agents decompose features, write production code, and review each other's work. A task-decomposition engine built on FastAPI and Pydantic replaces one-shot generation with multi-stage validation loops.</p>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">TypeScript</span>
+        </div>
+        <a class="link" href="https://devpost.com/software/dev-sim">View on Devpost →</a>
+      </div>
+
+      <div class="project">
+        <h3>AEGIS</h3>
+        <div class="p-meta mono">Distributed ML transmission engine</div>
+        <p>A high-throughput distributed communication layer coordinating asynchronous state synchronization and model parameter distribution across compute nodes, with custom socket buffers and Protocol Buffer serialization cutting transmission overhead by 28%.</p>
+        <div class="tags">
+          <span class="tag">C++</span>
+          <span class="tag">Python</span>
+          <span class="tag">gRPC</span>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="mono" style="margin-top:22px;">Want the technical deep-dive on either build? <a href="mailto:haard.h.doshi@gmail.com?subject=Simians%20/%20AEGIS%20-%20technical%20walkthrough">Email me</a> and I'll walk you through the code.</p>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap prose">
+    <div class="section-head">
+      <h2>Education</h2>
+      <span class="mono">expected 2028</span>
+    </div>
+    <div class="edu-row">
+      <div class="school">
+        <h3>Drexel University, Pennoni Honors College</h3>
+        <p>B.S. Computer Science — AI/ML Concentration, Minor in Data Science</p>
+      </div>
+    </div>
+    <div class="honors">
+      <span class="tag">Dean's List, all quarters</span>
+      <span class="tag">STAR Scholar</span>
+      <span class="tag">HackPrinceton Top 2 Finalist</span>
+      <span class="tag">3rd Place, BCG Case Competition</span>
+      <span class="tag">Member, Drexel AI Club</span>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap prose">
+    <h2>Let's talk</h2>
+    <p>Open to software engineering, data/AI engineering, and quantitative roles. The fastest way to reach me is email.</p>
+    <div class="contact-row">
+      <a class="btn primary" href="mailto:haard.h.doshi@gmail.com">haard.h.doshi@gmail.com</a>
+      <a class="btn" href="https://linkedin.com/in/haard-doshi">LinkedIn</a>
+    </div>
+    <div class="foot-note">Philadelphia, PA &nbsp;·&nbsp; <span id="visit-count">—</span></div>
+  </div>
+</footer>
+
+<!--
+  Optional: swap in GoatCounter (free, privacy-friendly, no personal identification —
+  just visit counts, referrers, and rough country/browser) by signing up at
+  https://www.goatcounter.com, then uncomment this and put your code in place of
+  YOURCODE:
+
+  <script data-goatcounter="https://YOURCODE.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+-->
+
+<script>
+  // Lightweight, no-signup visit counter (countapi.io). Each unique page load
+  // increments a shared counter. If the service is unreachable, we fail quietly.
+  (async function () {
+    try {
+      const res = await fetch('https://api.countapi.xyz/hit/haarddoshi2006-portfolio/visits');
+      const data = await res.json();
+      document.getElementById('visit-count').textContent = 'Visit #' + data.value.toLocaleString();
+    } catch (e) {
+      document.getElementById('visit-count').textContent = '';
+    }
+  })();
+
+  // Live local time — a small, honest touch (not a gimmick): shows the actual
+  // time zone this site's work gets done in.
+  (function () {
+    const el = document.getElementById('local-clock');
+    if (!el) return;
+    function tick() {
+      const now = new Date();
+      const fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        hour: 'numeric',
+        minute: '2-digit',
+      });
+      el.textContent = 'Currently ' + fmt.format(now) + ' in Philadelphia';
+    }
+    tick();
+    setInterval(tick, 30000);
+  })();
+</script>
+
+</body>
+</html>
